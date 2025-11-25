@@ -152,12 +152,15 @@ def gate(tunnel_id):
         url_len = struct.unpack(">H", bio.read(2))[0]
         url = bio.read(url_len).decode('utf-8')
 
-        # ... (Skip full header parsing for brevity, same as previous) ...
-        # Assume 0 headers for this snippet to fit in context
-        bio.read(4)  # Skip header count
+        header_count = struct.unpack(">I", bio.read(4))[0]  # Read Int
+        headers = {}
+        for _ in range(header_count):
+            k = read_utf(bio)
+            v = read_utf(bio)
+            headers[k] = v
 
-        body_len = struct.unpack(">H", bio.read(2))[0]
-        body = bio.read(body_len).decode('utf-8')
+        body_len = struct.unpack(">I", bio.read(4))[0]
+        body = bio.read(body_len)
 
         # 4. Proxy Request
         resp = requests.request(method, url, data=body)
@@ -179,6 +182,11 @@ def gate(tunnel_id):
     except Exception as e:
         print(f"Gate Error: {e}")
         return "Processing Error", 400
+
+
+def read_utf(bio):
+    length = struct.unpack(">H", bio.read(2))[0]
+    return bio.read(length).decode('utf-8')
 
 
 if __name__ == '__main__':
