@@ -163,7 +163,7 @@ def gate(tunnel_id):
         body = bio.read(body_len)
 
         # 4. Proxy Request
-        resp = requests.request(method, url, data=body)
+        resp = requests.request(method, url, data=body, verify=False)
 
         # 5. Encrypt Response
         resp_bio = BytesIO()
