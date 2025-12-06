@@ -98,7 +98,8 @@ def create_tunnel():
 
     try:
         session_key = rsa_decrypt_key(raw_data)
-        if len(session_key) != 16: raise Exception("Invalid Key Size")
+        if len(session_key) != 16:
+            raise Exception(f"Invalid Key Size: {session_key}")
 
         # Generate Tunnel ID
         tunnel_id = secrets.token_hex(8)  # 16 chars
