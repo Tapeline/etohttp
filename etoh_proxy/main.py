@@ -97,7 +97,7 @@ def create_tunnel():
         return "Invalid Size", 400
 
     try:
-        session_key = rsa_decrypt_key(raw_data)
+        session_key = rsa_decrypt_key(raw_data)[-16]
         if len(session_key) != 16:
             raise Exception(f"Invalid Key Size: {session_key}")
 
