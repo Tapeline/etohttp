@@ -169,7 +169,8 @@ def gate(tunnel_id):
         resp_bio = BytesIO()
         resp_bio.write(struct.pack(">I", resp.status_code))
         resp_text = resp.text.encode('utf-8')
-        resp_bio.write(struct.pack(">H", len(resp_text)))
+        print("->", resp_text)
+        #resp_bio.write(struct.pack(">H", len(resp_text)))
         resp_bio.write(resp_text)
 
         new_iv = os.urandom(8)
